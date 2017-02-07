@@ -1,8 +1,8 @@
-package org.openfs.filestore;
+package org.openfs.tests;
 
+import io.netty.buffer.ByteBuf;
 import org.openfs.filestore.file.IndexedFile;
 import org.openfs.filestore.store.FileStore;
-import io.netty.buffer.ByteBuf;
 
 import java.nio.charset.StandardCharsets;
 
@@ -16,6 +16,10 @@ public final class Test {
 	private Test() {}
 
 	public static void main(String[] a) throws Exception {
+		testStore();
+	}
+
+	private static void testStore() throws Exception {
 		FileStore store = FileStore.create(0, "Index Repository")
 				.add(IndexedFile.create(0, "First Index", "payload".getBytes(StandardCharsets.UTF_8)))
 				.add(IndexedFile.create(1, "Second Index"))
