@@ -13,6 +13,7 @@ Is an in-memory file system that allows you to pack multiple files into a single
 
 ### Dependencies
 * Netty
+* Lombok
 
 ### How it works
 The file system has stores called a **FileStore**, which describe files that may be contained in them. A FileStore is similar to a directory in that it will store files, but a FileStore cannot store other directories.

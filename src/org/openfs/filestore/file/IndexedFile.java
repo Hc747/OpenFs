@@ -2,22 +2,15 @@ package org.openfs.filestore.file;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.GsonBuilder;
-import org.openfs.filestore.Reference;
-import org.openfs.filestore.codec.decoder.ReferenceDecoder;
-import org.openfs.filestore.codec.encoder.ReferenceEncoder;
-import com.openfs.filestore.file.codec.decoders.*;
-import com.openfs.filestore.file.codec.encoders.*;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Getter;
 import lombok.Setter;
-import org.openfs.filestore.file.codec.decoders.IdentifierDecoder;
-import org.openfs.filestore.file.codec.decoders.NameDecoder;
-import org.openfs.filestore.file.codec.decoders.PayloadDecoder;
-import org.openfs.filestore.file.codec.encoders.EOFEncoder;
-import org.openfs.filestore.file.codec.encoders.IdentifierEncoder;
-import org.openfs.filestore.file.codec.encoders.NameEncoder;
-import org.openfs.filestore.file.codec.encoders.PayloadEncoder;
+import org.openfs.filestore.Reference;
+import org.openfs.filestore.codec.decoder.ReferenceDecoder;
+import org.openfs.filestore.codec.encoder.ReferenceEncoder;
+import org.openfs.filestore.file.codec.decoders.*;
+import org.openfs.filestore.file.codec.encoders.*;
 
 import java.util.*;
 
