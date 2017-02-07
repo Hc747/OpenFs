@@ -1,5 +1,5 @@
 #Open FileStore (OPENFs)
-Is an in-memory file system that allows you to pack multiple files into a single, compressed binary file. It is based largely off of Indexed Binary File System (IBFS) by Chad Adams. ![alt tag](https://github.com/chadalen)
+Is an in-memory file system that allows you to pack multiple files into a single, compressed binary file. It is based largely off of Indexed Binary File System (IBFS) by Chad Adams.
 
 ### Features
 * Super easy to use
