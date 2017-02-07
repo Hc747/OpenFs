@@ -1,15 +1,19 @@
 #Open FileStore (OPENFs)
 Is an in-memory file system that allows you to pack multiple files into a single, compressed binary file. It is based largely off of Indexed Binary File System (IBFS) by Chad Adams. ![alt tag](https://github.com/chadalen)
+
 ### Features
 * Super easy to use
 * Can store anything as long as you can get the bytes of it
 * All your data is kept in 1 file
+
 ### Coming soon
 * Data compression
 * Intuitive GUI
 * Optional data encryption
+
 ### Dependencies
 * Netty
+
 ### How it works
 The file system has stores called a **FileStore**, which describe files that may be contained in them. A FileStore is similar to a directory in that it will store files, but a FileStore cannot store other directories.
 The files in a FileStore are called an **IndexedFile**. An IndexedFile is a binary file that contains the actual files data.
