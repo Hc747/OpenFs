@@ -3,7 +3,6 @@ package org.openfs.filestore;
 import com.google.common.base.Preconditions;
 import io.netty.buffer.ByteBuf;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author Harrison, Alias: Hc747, Contact: harrisoncole05@gmail.com
@@ -11,7 +10,6 @@ import lombok.Setter;
  * @since 6/2/17
  */
 @Getter
-@Setter
 public abstract class Reference {
 
 	//TODO utilise observer pattern so that IndexedFileSystem can be notified of any mutations
@@ -30,11 +28,8 @@ public abstract class Reference {
 	protected Reference() {}
 
 	protected Reference(int identifier, String name) {
-		Preconditions.checkArgument(identifier >= 0, "\'identifier\' not permitted to be negative.");
-		Preconditions.checkNotNull(name, "\'name\' not permitted to be null.");
-		Preconditions.checkArgument(!name.isEmpty(), "\'name\' not permitted to be empty.");
-		this.identifier = identifier;
-		this.name = name;
+		setIdentifier(identifier);
+		setName(name);
 	}
 
 	public abstract boolean isEmpty();
@@ -52,6 +47,17 @@ public abstract class Reference {
 			return identifier == reference.identifier && name.equals(reference.name);
 		}
 		return false;
+	}
+
+	public void setIdentifier(int identifier) {
+		Preconditions.checkArgument(identifier >= 0, "\'identifier\' not permitted to be negative.");
+		this.identifier = identifier;
+	}
+
+	public void setName(String name) {
+		Preconditions.checkNotNull(name, "\'name\' not permitted to be null.");
+		Preconditions.checkArgument(!name.isEmpty(), "\'name\' not permitted to be empty.");
+		this.name = name;
 	}
 
 }

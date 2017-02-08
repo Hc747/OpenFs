@@ -5,12 +5,16 @@ import com.google.gson.GsonBuilder;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Getter;
-import lombok.Setter;
 import org.openfs.filestore.Reference;
 import org.openfs.filestore.codec.decoder.ReferenceDecoder;
 import org.openfs.filestore.codec.encoder.ReferenceEncoder;
-import org.openfs.filestore.file.codec.decoders.*;
-import org.openfs.filestore.file.codec.encoders.*;
+import org.openfs.filestore.file.codec.decoders.IdentifierDecoder;
+import org.openfs.filestore.file.codec.decoders.NameDecoder;
+import org.openfs.filestore.file.codec.decoders.PayloadDecoder;
+import org.openfs.filestore.file.codec.encoders.EOFEncoder;
+import org.openfs.filestore.file.codec.encoders.IdentifierEncoder;
+import org.openfs.filestore.file.codec.encoders.NameEncoder;
+import org.openfs.filestore.file.codec.encoders.PayloadEncoder;
 
 import java.util.*;
 
@@ -20,7 +24,6 @@ import java.util.*;
  * @since 6/2/17
  */
 @Getter
-@Setter
 public final class IndexedFile extends Reference {
 
 	private static final Map<Integer, Class<? extends ReferenceDecoder<IndexedFile>>> decoders = new HashMap<>();
@@ -33,8 +36,7 @@ public final class IndexedFile extends Reference {
 
 	private IndexedFile(int identifier, String name, byte[] payload) {
 		super(identifier, name);
-		Preconditions.checkNotNull(payload, "\'payload\' not permitted to be null.");
-		this.payload = payload;
+		setPayload(payload);
 	}
 
 	public static IndexedFile create(ByteBuf buffer) throws Exception {
@@ -102,6 +104,11 @@ public final class IndexedFile extends Reference {
 	@Override
 	public String toString() {
 		return new GsonBuilder().create().toJson(this);
+	}
+
+	public void setPayload(byte[] payload) {
+		Preconditions.checkNotNull(payload, "\'payload\' not permitted to be null.");
+		this.payload = payload;
 	}
 
 	private static void registerDecoder(int opcode, Class<? extends ReferenceDecoder<IndexedFile>> clazz) {
