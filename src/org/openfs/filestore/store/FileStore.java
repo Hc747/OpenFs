@@ -55,8 +55,7 @@ public final class FileStore extends Reference implements Container<IndexedFile,
 
 	@Override
 	public FileStore add(IndexedFile reference) {
-		if (contains(reference::equals))
-			throw new IllegalArgumentException("You must invoke \'!contains\' on \'reference\' prior to invoking add.");
+		Preconditions.checkArgument(!contains(reference::equals), "You must invoke \'!contains\' on \'reference\' prior to invoking add.");
 		reference.setIdentifier(files.size());
 		files.add(reference);
 		return this;
@@ -83,8 +82,7 @@ public final class FileStore extends Reference implements Container<IndexedFile,
 	@Override
 	public FileStore replace(IndexedFile target, IndexedFile replacement) {
 		Preconditions.checkNotNull(replacement, "\'replacement\' not permitted to be null.");
-		if (!contains(target::equals))
-			throw new IllegalArgumentException("You must invoke \'contains\' on \'target\' prior to invoking \'replace\'.");
+		Preconditions.checkArgument(contains(target::equals), "You must invoke \'contains\' on \'target\' prior to invoking \'replace\'.");
 		final int index = files.indexOf(target);
 		Preconditions.checkArgument(index >= 0, "\'index\' not permitted to be negative.");
 		replacement.setIdentifier(index);
@@ -96,9 +94,8 @@ public final class FileStore extends Reference implements Container<IndexedFile,
 	public FileStore insert(IndexedFile reference, int index) {
 		Preconditions.checkNotNull(reference, "\'reference\' not permitted to be null.");
 		Preconditions.checkArgument(index >= 0 && index <= files.size(), String.format("0 <= \'index\' (%d) <= size (%d).", index, files.size()));
-		if (contains(reference::equals))
-			throw new IllegalArgumentException("You must invoke \'!contains\' on \'reference\' prior to invoking \'insert\'.");
-		ArrayList<IndexedFile> references = new ArrayList<>();
+		Preconditions.checkArgument(!contains(reference::equals), "You must invoke \'!contains\' on \'reference\' prior to invoking \'insert\'.");
+		final ArrayList<IndexedFile> references = new ArrayList<>();
 		references.add(reference);
 		while (index < files.size()) {
 			references.add(files.remove(index));
@@ -124,8 +121,7 @@ public final class FileStore extends Reference implements Container<IndexedFile,
 	@Override
 	public IndexedFile get(Predicate<IndexedFile> lookup) {
 		final Optional<IndexedFile> idx = files.stream().filter(lookup).findAny();
-		if (!idx.isPresent())
-			throw new IllegalArgumentException("You must invoke \'contains\' prior to invoking \'get\'.");
+		Preconditions.checkArgument(idx.isPresent(), "You must invoke \'contains\' prior to invoking \'get\'.");
 		return idx.get();
 	}
 
@@ -170,8 +166,7 @@ public final class FileStore extends Reference implements Container<IndexedFile,
 			if (opcode == EOF)
 				break;
 			final Class<? extends ReferenceDecoder<FileStore>> decoder = decoders.get(opcode);
-			if (decoder == null)
-				throw new RuntimeException(String.format("Unhandled FileStore opcode: %d", opcode));
+			Preconditions.checkNotNull(decoder, String.format("Unhandled FileStore opcode: %d", opcode));
 			decoder.newInstance().decode(this, buffer);
 			System.out.println("\tFileStore decoded: "+decoder.getSimpleName());
 		}
@@ -193,14 +188,12 @@ public final class FileStore extends Reference implements Container<IndexedFile,
 
 	private static void registerDecoder(int opcode, Class<? extends ReferenceDecoder<FileStore>> clazz) {
 		final Class<? extends ReferenceDecoder<FileStore>> decoder = decoders.get(opcode);
-		if (decoder != null)
-			throw new RuntimeException(String.format("ReferenceDecoder opcode already handled: %d, %s", opcode, decoder.getSimpleName()));
+		Preconditions.checkState(decoder == null, String.format("ReferenceDecoder opcode already handled: %d, %s", opcode, decoder.getSimpleName()));
 		decoders.put(opcode, clazz);
 	}
 
 	private static void registerEncoder(Class<? extends ReferenceEncoder<FileStore>> encoder) {
-		if (encoders.contains(encoder))
-			throw new RuntimeException(String.format("ReferenceEncoder already handled: %s", encoder.getSimpleName()));
+		Preconditions.checkArgument(!encoders.contains(encoder), String.format("ReferenceEncoder already handled: %s", encoder.getSimpleName()));
 		encoders.addLast(encoder);
 	}
 

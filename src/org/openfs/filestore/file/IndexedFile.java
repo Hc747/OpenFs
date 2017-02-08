@@ -94,8 +94,7 @@ public final class IndexedFile extends Reference {
 			if (opcode == EOF)
 				break;
 			final Class<? extends ReferenceDecoder<IndexedFile>> decoder = decoders.get(opcode);
-			if (decoder == null)
-				throw new RuntimeException(String.format("Unhandled IndexedFile opcode: %d", opcode));
+			Preconditions.checkNotNull(decoder, String.format("Unhandled IndexedFile opcode: %d", opcode));
 			decoder.newInstance().decode(this, buffer);
 			System.out.println("\t\tIndexedFile decoded: "+decoder.getSimpleName());
 		}
@@ -113,14 +112,12 @@ public final class IndexedFile extends Reference {
 
 	private static void registerDecoder(int opcode, Class<? extends ReferenceDecoder<IndexedFile>> clazz) {
 		final Class<? extends ReferenceDecoder<IndexedFile>> decoder = decoders.get(opcode);
-		if (decoder != null)
-			throw new RuntimeException(String.format("ReferenceDecoder opcode already handled: %d, %s", opcode, decoder.getSimpleName()));
+		Preconditions.checkState(decoder == null, String.format("ReferenceDecoder opcode already handled: %d, %s", opcode, decoder.getSimpleName()));
 		decoders.put(opcode, clazz);
 	}
 
 	private static void registerEncoder(Class<? extends ReferenceEncoder<IndexedFile>> encoder) {
-		if (encoders.contains(encoder))
-			throw new RuntimeException(String.format("ReferenceEncoder already handled: %s", encoder.getSimpleName()));
+		Preconditions.checkArgument(!encoders.contains(encoder), String.format("ReferenceEncoder already handled: %s", encoder.getSimpleName()));
 		encoders.addLast(encoder);
 	}
 
