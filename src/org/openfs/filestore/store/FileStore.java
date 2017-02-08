@@ -2,16 +2,20 @@ package org.openfs.filestore.store;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.GsonBuilder;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import org.openfs.filestore.Container;
 import org.openfs.filestore.Reference;
 import org.openfs.filestore.codec.decoder.ReferenceDecoder;
 import org.openfs.filestore.codec.encoder.ReferenceEncoder;
 import org.openfs.filestore.file.IndexedFile;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import lombok.Getter;
-import org.openfs.filestore.store.codec.decoders.*;
-import org.openfs.filestore.store.codec.encoders.*;
+import org.openfs.filestore.store.codec.decoders.IdentifierDecoder;
+import org.openfs.filestore.store.codec.decoders.NameDecoder;
+import org.openfs.filestore.store.codec.decoders.PayloadDecoder;
+import org.openfs.filestore.store.codec.encoders.EOFEncoder;
+import org.openfs.filestore.store.codec.encoders.IdentifierEncoder;
+import org.openfs.filestore.store.codec.encoders.NameEncoder;
+import org.openfs.filestore.store.codec.encoders.PayloadEncoder;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -21,7 +25,6 @@ import java.util.function.Predicate;
  * @version 1.0
  * @since 6/2/17
  */
-@Getter
 public final class FileStore extends Reference implements Container<IndexedFile, FileStore> {
 
 	private static final Map<Integer, Class<? extends ReferenceDecoder<FileStore>>> decoders = new HashMap<>();
@@ -182,6 +185,10 @@ public final class FileStore extends Reference implements Container<IndexedFile,
 	private void sort() {
 		for (int index = 0; index < files.size(); index++)
 			files.get(index).setIdentifier(index);
+	}
+
+	public List<IndexedFile> getFiles() {
+		return Collections.unmodifiableList(files);
 	}
 
 	private static void registerDecoder(int opcode, Class<? extends ReferenceDecoder<FileStore>> clazz) {

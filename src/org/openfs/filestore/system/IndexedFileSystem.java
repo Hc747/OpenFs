@@ -1,10 +1,9 @@
 package org.openfs.filestore.system;
 
 import org.openfs.filestore.store.FileStore;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -12,8 +11,6 @@ import java.util.List;
  * @version 1.0
  * @since 6/2/17
  */
-@Getter
-@Setter
 public final class IndexedFileSystem implements AutoCloseable {
 
 	//TODO immutable objects to ensure thread safety
@@ -30,4 +27,9 @@ public final class IndexedFileSystem implements AutoCloseable {
 	public void close() throws Exception {
 		stores.clear();
 	}
+
+	public List<FileStore> getStores() {
+		return Collections.unmodifiableList(stores);
+	}
+
 }
