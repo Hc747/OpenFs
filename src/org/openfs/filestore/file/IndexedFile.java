@@ -104,6 +104,12 @@ public final class IndexedFile extends Reference {
 		return new GsonBuilder().create().toJson(this);
 	}
 
+	@Override
+	public boolean equals(Object other) {
+		final boolean equals = other instanceof IndexedFile && super.equals(other);
+		return equals && Arrays.equals(payload, ((IndexedFile)other).payload);
+	}
+
 	public void setPayload(byte[] payload) {
 		Preconditions.checkNotNull(payload, "\'payload\' not permitted to be null.");
 		this.payload = payload;

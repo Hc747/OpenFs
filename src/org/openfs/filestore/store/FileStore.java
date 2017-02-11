@@ -176,6 +176,12 @@ public final class FileStore extends Reference implements Container<IndexedFile,
 		return new GsonBuilder().setPrettyPrinting().create().toJson(this);
 	}
 
+	@Override
+	public boolean equals(Object other) {
+		final boolean equals = other instanceof FileStore && super.equals(other);
+		return equals && files.equals(((FileStore)other).files);
+	}
+
 	private void sort() {
 		for (int index = 0; index < files.size(); index++)
 			files.get(index).setIdentifier(index);
