@@ -29,7 +29,6 @@ public final class FileStore extends Reference implements Container<IndexedFile,
 
 	private static final Map<Integer, Class<? extends ReferenceDecoder<FileStore>>> decoders = new HashMap<>();
 	private static final Deque<Class<? extends ReferenceEncoder<FileStore>>> encoders = new ArrayDeque<>();
-	private static final String DEFAULT_NAME = "Empty";
 
 	private final List<IndexedFile> files = new ArrayList<>();
 

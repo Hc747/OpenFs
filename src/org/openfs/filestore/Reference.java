@@ -22,6 +22,8 @@ public abstract class Reference {
 	public static final int REFERENCE_NAME_OPCODE = 2;
 	public static final int REFERENCE_PAYLOAD_OPCODE = 3;
 
+	public static final String DEFAULT_NAME = "Empty";
+
 	protected int identifier;
 	protected String name;
 

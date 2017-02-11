@@ -28,7 +28,6 @@ public final class IndexedFile extends Reference {
 
 	private static final Map<Integer, Class<? extends ReferenceDecoder<IndexedFile>>> decoders = new HashMap<>();
 	private static final Deque<Class<? extends ReferenceEncoder<IndexedFile>>> encoders = new ArrayDeque<>();
-	private static final String DEFAULT_NAME = "Empty";
 
 	private byte[] payload;
 
