@@ -13,11 +13,9 @@ public interface Container<T extends Reference, P> {
 
 	P remove(Predicate<T> lookup);
 
-	//TODO consider making target a predicate
-	P replace(T target, T replacement);
+	P replace(Predicate<T> lookup, T replacement);
 
-	//TODO consider making target a predicate
-	P insert(T target, int index);
+	P insert(T reference, int index);
 
 	boolean contains(Predicate<T> lookup);
 

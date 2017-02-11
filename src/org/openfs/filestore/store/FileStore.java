@@ -79,14 +79,22 @@ public final class FileStore extends Reference implements Container<IndexedFile,
 	}
 
 	@Override
-	public FileStore replace(IndexedFile target, IndexedFile replacement) {
+	public FileStore replace(Predicate<IndexedFile> lookup, IndexedFile replacement) {
 		Preconditions.checkNotNull(replacement, "\'replacement\' not permitted to be null.");
-		Preconditions.checkArgument(contains(target::equals), "You must invoke \'contains\' on \'target\' prior to invoking \'replace\'.");
-		final int index = files.indexOf(target);
+		Preconditions.checkArgument(contains(lookup), "You must invoke \'contains\' on \'target\' prior to invoking \'replace\'.");
+		final int index = files.indexOf(get(lookup));
 		Preconditions.checkArgument(index >= 0, "\'index\' not permitted to be negative.");
 		replacement.setIdentifier(index);
 		files.set(index, replacement);
 		return this;
+	}
+
+	public FileStore replace(int identifier, IndexedFile replacement) {
+		return replace(it -> it.getIdentifier() == identifier, replacement);
+	}
+
+	public FileStore replace(String name, IndexedFile replacement) {
+		return replace(it -> it.getName().equals(name), replacement);
 	}
 
 	@Override
